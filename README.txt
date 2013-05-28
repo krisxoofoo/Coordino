@@ -12,6 +12,8 @@ How to Install Coordino
 Unzip the Coordino package your root working www directory.
 	ex: /var/www/htdocs/test.com
 	
+Create folder "cache" in app/tmp/, put 777 chmod
+	
 Then open your web browser and proceed to http://test.com to complete instillation.
 
 ==================================
