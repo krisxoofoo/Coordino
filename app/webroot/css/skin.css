@@ -71,8 +71,8 @@ h2 {
 /* -------------------------------------------------------------- 
   Widgets
 -------------------------------------------------------------- */
-.widget_box {background-color: #efefef; font-size: 13px; padding: 5px; margin-bottom: 5px;}
-.widget_box h3 {color: #000 !important; padding: 0px; margin-bottom: 5px;}
+.widget_box {background-color: #efefef; font-size: 13px; padding: 10px; margin-bottom: 5px;}
+.widget_box h3 {color: #000 !important; padding: 0px; margin-bottom: 14px; line-height: 22px;}
 .widget_box p {font-size: 15px; color: #222;}
 
 /* -------------------------------------------------------------- 

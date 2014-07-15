@@ -52,8 +52,6 @@
 
 #sidebar { float: left; width: 250px; display: inline;}
 #sidebar h3 { color: #888; }
-#sidebar ul, #resources ol { color: #888; }
-#sidebar ul a { color: #555; }
 
 
 /* Footer
