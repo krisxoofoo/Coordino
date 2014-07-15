@@ -31,16 +31,13 @@
 					<div style="float: right;">
 						<div class="thumb_with_border">
 
-						<?php echo $html->link( $thumbnail->get(array(
-								        'save_path' => WWW_ROOT . 'img/thumbs',
-								        'display_path' => $this->webroot.  'img/thumbs',
-								        'error_image_path' => $this->webroot. 'img/answerAvatar.png',
-								        'src' => WWW_ROOT .  $question['User']['image'],
-								        'w' => 25,
-										'h' => 25,
-										'q' => 100,
-				                        'alt' => $question['User']['username'] . 'picture' )
-					),'/users/' .$question['User']['public_key'].'/'.$question['User']['username'], array('escape' => false));?>
+                            <?php
+                               echo $html->link(
+                                   '<img src="http://www.gravatar.com/avatar/' . md5(strtolower(trim($question['User']['email']))) . '?s=25" width="25" height="25"/>',
+                                   '/users/'.$question['User']['public_key'].'/'.$question['User']['username'],
+                                   array('escape' => false)
+                               );
+                            ?>
 						</div>
 						<div style="float: left; line-height: .9;">
 							<div>
