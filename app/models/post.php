@@ -88,7 +88,7 @@ class Post extends AppModel {
 
     if($search == 'no') {
         if($type == 'recent') {
-			return $this->find('all', array(
+			return $this->__groupByCategory($this->find('all', array(
 				'contain' => array(
                     'User', 'Tag.tag', 'Answer' => array(
                         'conditions' => array(
@@ -102,14 +102,14 @@ class Post extends AppModel {
                 ),
 				'order' => 'Post.timestamp DESC',
 				'fields' => array(
-					'Post.title', 'Post.views', 'Post.url_title',
+					'Post.title', 'Post.views', 'Post.url_title', 'Post.category',
                     'Post.public_key', 'Post.timestamp', 'User.username',
                     'User.public_key', 'User.image', 'User.reputation'
 					),
 				'limit' => $record . ',' . 15
-			));
+			)));
         }elseif($type == 'unanswered') {
-			return $this->find(
+			return $this->__groupByCategory($this->find(
                 'all', array(
 				    'contain' => array(
                         'User', 'Tag.tag', 'Answer' => array(
@@ -125,15 +125,15 @@ class Post extends AppModel {
                     'Post.flags <' => $flag_check['Setting']['value']),
 				'order' => 'Post.timestamp DESC',
 				'fields' => array(
-					'Post.title', 'Post.views',
+					'Post.title', 'Post.views', 'Post.category',
                     'Post.url_title', 'Post.public_key',
                     'Post.timestamp', 'User.username', 'User.public_key',
                     'User.image', 'User.reputation'
 					),
 				'limit' => $record . ',' . 15
-			));
+			)));
 		}elseif($type == 'solved') {
-            return $this->find(
+            return $this->__groupByCategory($this->find(
                 'all', array(
 				    'contain' => array(
                         'User', 'Tag.tag', 'Answer' => array(
@@ -149,15 +149,15 @@ class Post extends AppModel {
                     'Post.flags <' => $flag_check['Setting']['value']),
 				'order' => 'Post.timestamp DESC',
 				'fields' => array(
-					'Post.title', 'Post.views',
+					'Post.title', 'Post.views', 'Post.category',
                     'Post.url_title', 'Post.public_key',
                     'Post.timestamp', 'User.username', 'User.public_key',
                     'User.image', 'User.reputation'
 					),
 				'limit' => $record . ',' . 15
-			));
+			)));
         }elseif($type == 'hot') {
-            return $this->find(
+            return $this->__groupByCategory($this->find(
                 'all', array(
 				    'contain' => array(
                         'User', 'Tag.tag', 'Answer' => array(
@@ -172,15 +172,15 @@ class Post extends AppModel {
                     'Post.flags <' => $flag_check['Setting']['value']),
 				'order' => 'Post.views DESC',
 				'fields' => array(
-					'Post.title', 'Post.views',
+					'Post.title', 'Post.views', 'Post.category',
                     'Post.url_title', 'Post.public_key',
                     'Post.timestamp', 'User.username', 'User.public_key',
                     'User.image', 'User.reputation'
 					),
 				'limit' => $record . ',' . 15
-			));
+			)));
         }elseif($type == 'week') {
-            return $this->find(
+            return $this->__groupByCategory($this->find(
                 'all', array(
 				    'contain' => array(
                         'User', 'Tag.tag', 'Answer' => array(
@@ -196,15 +196,15 @@ class Post extends AppModel {
                     'Post.flags <' => $flag_check['Setting']['value']),
 				'order' => 'Post.timestamp DESC',
 				'fields' => array(
-					'Post.title', 'Post.views',
+					'Post.title', 'Post.views', 'Post.category',
                     'Post.url_title', 'Post.public_key',
                     'Post.timestamp', 'User.username', 'User.public_key',
                     'User.image', 'User.reputation'
 					),
 				'limit' => $record . ',' . 15
-			));
+			)));
         }elseif($type == 'month') {
-            return $this->find(
+            return $this->__groupByCategory($this->find(
                 'all', array(
 				    'contain' => array(
                         'User', 'Tag.tag', 'Answer' => array(
@@ -220,18 +220,18 @@ class Post extends AppModel {
                     'Post.flags <' => $flag_check['Setting']['value']),
 				'order' => 'Post.timestamp DESC',
 				'fields' => array(
-					'Post.title', 'Post.views',
+					'Post.title', 'Post.views', 'Post.category',
                     'Post.url_title', 'Post.public_key',
                     'Post.timestamp', 'User.username', 'User.public_key',
                     'User.image', 'User.reputation'
 					),
 				'limit' => $record . ',' . 15
-			));
+			)));
         }
     } else {
             $escapedNeedle = $this->getDataSource()->value($type['needle']);
 
-            return $this->find(
+            return $this->__groupByCategory($this->find(
                 'all', array(
                     'conditions' => array(
                         "MATCH(Post.content, Post.title) against (" . $escapedNeedle . " IN BOOLEAN MODE)",
@@ -247,12 +247,12 @@ class Post extends AppModel {
                     ),
                     'fields' => array(
 						"match(Post.content, Post.title) against(" . $escapedNeedle . ") as relevance",
-                        'Post.title', 'Post.views', 'Post.url_title', 'Post.public_key',
+                        'Post.title', 'Post.category', 'Post.views', 'Post.url_title', 'Post.public_key',
                         'Post.timestamp', 'User.username', 'User.public_key', 'User.image',
                         'User.reputation'),
                     'order' => 'relevance DESC',
                     'limit' => $record . ',' . 15)
-            );
+            ));
         }
     }
 
@@ -359,6 +359,16 @@ class Post extends AppModel {
             );
         }
         return $post;
+    }
+
+    protected function __groupByCategory($results)
+    {
+        $questions = array();
+        foreach ($results as $r) {
+            $questions[$r['Post']['category']][] = $r;
+        }
+
+        return $questions;
     }
 }
 ?>

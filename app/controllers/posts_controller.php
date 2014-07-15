@@ -6,21 +6,21 @@ class PostsController extends AppController {
 	var $components = array('Auth', 'Session', 'Markdownify', 'Markdown', 'Cookie', 'Email', 'Htmlfilter');
 	var $helpers = array('Javascript', 'Time', 'Cache', 'Thumbnail', 'Session');
 	//var $cacheAction = "1 hour";
-	
+
 	public function beforeRender() {
 		$this->getWidgets();
 		$this->underMaintenance();
 	}
-	
+
 	public function beforeFilter() {
 		parent::beforeFilter();
 		$this->Auth->allow('ask', 'view', 'answer', 'display', 'miniSearch', 'maintenance');
 		$this->isAdmin($this->Auth->user('id'));
-		
+
 		$this->Cookie->name = 'user_cookie';
 		$this->Cookie->time =  604800;  // or '1 hour'
-		$this->Cookie->path = '/'; 
-		$this->Cookie->domain = $_SERVER['SERVER_NAME'];   
+		$this->Cookie->path = '/';
+		$this->Cookie->domain = $_SERVER['SERVER_NAME'];
 		$this->Cookie->key = 'MZca3*f113vZ^%v ';
 
 		/**
@@ -30,7 +30,7 @@ class PostsController extends AppController {
 			$this->Auth->login($this->Cookie->read('User'));
 		}
 	}
-	
+
 	public function afterFilter() {
 		$this->Session->delete('errors');
 	}
@@ -44,14 +44,14 @@ class PostsController extends AppController {
 		$this->Session->setFlash(__('Post deleted',true), 'error');
 		$this->redirect('/');
 	}
-	
+
 	public function ask() {
 		$this->set('title_for_layout', __('Ask a question',true));
-		
+
 		if(!empty($this->data)) {
 
 				$this->__validatePost($this->data, '/questions/ask');
-			
+
 				/**
 				 * If the user is not logged in create an account for them.
 				 */
@@ -59,7 +59,7 @@ class PostsController extends AppController {
 					$user = $this->__userSave(array('User' => $this->data['User']));
 					$this->Auth->login($user);
 				}
-			
+
 				/**
 				 * Add in required Post data
 				 */
@@ -69,23 +69,23 @@ class PostsController extends AppController {
 					$userId = $this->Auth->user('id');
 				}
 				$post = $this->__postSave('question', $userId, $this->data);
-			
+
 				$this->redirect('/questions/' . $post['public_key'] . '/' . $post['url_title']);
 		}
-		
+
 	}
-	
+
 	public function answer($public_key) {
 		$question = $this->Post->findByPublicKey($public_key);
-		
+
 		if(!empty($this->data)) {
 				$this->__validatePost($this->data, '/questions/' . $question['Post']['public_key'] . '/' . $question['Post']['url_title'] . '#user_answer');
-				
+
 				if(!empty($this->data['User'])) {
 					$user = $this->__userSave(array('User' => $this->data['User']));
 					$this->Auth->login($user);
 				}
-		
+
 				if(!empty($user)) {
 					$userId = $user['User']['id'];
                     $username = $user['User']['username'];
@@ -99,9 +99,9 @@ class PostsController extends AppController {
                 		'conditions' => array('name' => 'flag_display_limit')
                 	)
                 );
-                
+
                 $post = $this->__postSave('answer', $userId, $this->data, $question['Post']['id']);
-               	
+
                 if(($question['Post']['notify'] == 1) && ($post['flags'] < $flag_limit['Setting']['value'])) {
                     $user = $this->User->find(
                         'first', array(
@@ -123,7 +123,7 @@ class PostsController extends AppController {
                 $this->Email->sendAs = 'both';
                 $this->Email->send();
                 }
-				
+
 				$this->redirect('/questions/' . $question['Post']['public_key'] . '/' . $question['Post']['url_title']);
 		}
 
@@ -145,7 +145,7 @@ class PostsController extends AppController {
 		$this->User->set($data);
 		$errors = array();
 
-		
+
 		if(!$this->Post->validates() || !$this->User->validates()) {
 			$data['Post']['content'] = $this->Markdownify->parseString($data['Post']['content']);
 			$validationErrors = array_merge($this->Post->invalidFields(), $this->User->invalidFields());
@@ -166,7 +166,7 @@ class PostsController extends AppController {
 	 * @param string $data $this->data
 	 * @return array $post The saved Post data.
 	 */
-	
+
 	public function __postSave($type, $userId, $data, $relatedId = null) {
 		/**
 		 * Add in required Post data
@@ -195,16 +195,16 @@ class PostsController extends AppController {
 		Configure::write('debug', 0);
 		$this->data['Post']['content'] = str_replace('<code>', '<code class="prettyprint">', $this->data['Post']['content']);
 		$this->data['Post']['content'] = @$this->Htmlfilter->filter($this->data['Post']['content']);
-		
+
 		/**
 		 * Spam Protection
-		 */ 
+		 */
 		$flags = 0;
 		$content = strip_tags($this->data['Post']['content']);
 		// Get links in the content
 		$links = preg_match_all("#(^|[\n ])(?:(?:http|ftp|irc)s?:\/\/|www.)(?:[-A-Za-z0-9]+\.)+[A-Za-z]{2,4}(?:[-a-zA-Z0-9._\/&=+%?;\#]+)#is", $content, $matches);
 		$links = $matches[0];
-		
+
 		$totalLinks = count($links);
 		$length = strlen($content);
 
@@ -215,7 +215,7 @@ class PostsController extends AppController {
 		} else {
 			$flags = $flags - 1;
 		}
-		
+
 		// How long is the body
 		// +2 if more then 20 chars and no links, -1 if less then 20
 		if ($length >= 20 && $totalLinks <= 0) {
@@ -225,7 +225,7 @@ class PostsController extends AppController {
 		} else if ($length < 20) {
 			$flags = $flags + 2;
 		}
-		
+
 		// Keyword search
 		$blacklistKeywords = $this->Setting->find('first', array('conditions' => array('name' => 'blacklist')));
 		$blacklistKeywords = unserialize($blacklistKeywords['Setting']['description']);
@@ -242,50 +242,50 @@ class PostsController extends AppController {
 					++$flags;
 				}
 			}
-			
+
 			foreach ($blacklistKeywords as $keyword) {
 				if (stripos($link, $keyword) !== false) {
 					++$flags;
 				}
 			}
-			
+
 			if (strlen($link) >= 30) {
 				++$flags;
 			}
 		}
-		
+
 		// Body starts with...
 		// -10 flags
 		$firstWord = substr($content, 0, stripos($content, ' '));
 		$firstDisallow = array_merge($blacklistKeywords, array('interesting', 'cool', 'sorry'));
-		
+
 		if (in_array(strtolower($firstWord), $firstDisallow)) {
 			$flags = $flags + 10;
 		}
-		
+
 		$manyTimes = $this->Post->find('count', array(
 			'conditions' => array('Post.content' => $this->data['Post']['content'])
 			));
-			
+
 		// Random character match
 		// -1 point per 5 consecutive consonants
 		$consonants = preg_match_all('/[^aAeEiIoOuU\s]{5,}+/i', $content, $matches);
 		$totalConsonants = count($matches[0]);
-		
+
 		if ($totalConsonants > 0) {
 			$flags = $flags + $totalConsonants;
 		}
-		
+
 		$flags = $flags + $manyTimes;
-		
+
 		$this->data['Post']['flags'] = $flags;
 		if($flags >= $this->Setting->getValue('flag_display_limit')) {
 			$this->data['Post']['tags'] = '';
 		}
-		/** 
+		/**
 		 * Save the Data
 		 */
-		if($this->Post->save($this->data)) { 
+		if($this->Post->save($this->data)) {
             if($type == 'question') {
                 $this->History->record('asked', $this->Post->id, $this->Auth->user('id'));
             }elseif($type == 'answer') {
@@ -322,7 +322,7 @@ class PostsController extends AppController {
 	/**
 	 * Saves the user data and creates a new user account for them.
 	 *
-	 * @param string $data 
+	 * @param string $data
 	 * @return void
 	 * @todo this should be moved to the model at some point
 	 */
@@ -351,7 +351,7 @@ class PostsController extends AppController {
 	 * Allowes the user to view a question.
 	 * If a user tries to view a Post that is a answer type they will be redirected.
 	 *
-	 * @param string $public_key 
+	 * @param string $public_key
 	 * @return void
 	 */
 	public function view($public_key) {
@@ -381,14 +381,14 @@ class PostsController extends AppController {
             )
         );
 		/**
-		 * Check to see if the post is spam or not. 
+		 * Check to see if the post is spam or not.
 		 * If so redirect.
 		 */
 		if($question['Post']['flags'] >= $flag_check['Setting']['value'] && $this->Setting->repCheck($this->Auth->user('id'), 'rep_edit')) {
 			$this->Session->setFlash(__('The question you are trying to view no longer exists.',true), 'error');
 			$this->redirect('/');
 		}
-		
+
 		/**
 		 * Even though Post can return an array of answers through associations
 		 * we cannot order or sort this data as we need to
@@ -552,10 +552,10 @@ class PostsController extends AppController {
 		$questions = $this->Post->monsterSearch(array('needle' => $_GET['query']), 1, 'yes');
 		$this->set('questions', $questions);
 	}
-	
+
 	public function markCorrect($public_key) {
 		$answer = $this->Post->findByPublicKey($public_key);
-		
+
 		/**
 		 * Check to make sure the Post is an answer
 		 */
@@ -625,7 +625,7 @@ class PostsController extends AppController {
             }
         }
     }
-    
+
     public function maintenance() {
     }
 }
