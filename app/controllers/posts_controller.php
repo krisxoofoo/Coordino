@@ -116,7 +116,7 @@ class PostsController extends AppController {
                 $this->set('username', $username);
                 $this->set('dear', $user['User']['username']);
                 $this->set('answer', $this->data['Post']['content']);
-                $this->Email->from = 'Answerman <answers@' . $_SERVER['SERVER_NAME'] . '>';
+                $this->Email->from = 'Answers <answers@' . $_SERVER['SERVER_NAME'] . '>';
                 $this->Email->to = $user['User']['email'];
                 $this->Email->subject = __('Your question has been answered!',true);
                 $this->Email->template = 'notification';
