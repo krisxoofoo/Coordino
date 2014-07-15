@@ -19,7 +19,7 @@ class Post extends AppModel {
 			'User' => array(
 				'className' => 'User',
 				'foreignKey' => 'user_id',
-				'fields' => array('User.username', 'User.public_key', 'User.reputation', 'User.image')
+				'fields' => array('User.username', 'User.email', 'User.public_key', 'User.reputation', 'User.image')
 			)
 		);
 		
