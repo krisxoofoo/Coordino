@@ -138,9 +138,9 @@ class TagBehavior extends ModelBehavior {
     $return_array = array();
 
     foreach($string_array as $t) {
-		$tFlags = $this->_getSpamFlags($t);
-		$t = str_replace(' ', '-', $t);
+        $tFlags = $this->_getSpamFlags($t);
         $t = strtolower(trim($t));
+        $t = str_replace(' ', '-', $t);
         if (strlen($t)>0 && $tFlags < 2) {
             $return_array[] = $t;
         }

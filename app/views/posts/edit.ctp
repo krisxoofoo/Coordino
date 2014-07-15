@@ -85,7 +85,7 @@
 <?php if ($question['Post']['type'] == 'question') { ?>
 <?=$form->label('tags');?><br/>
 <?=$form->text('tags', array('class' => 'wmd-panel big_input', 'value' => $tags, 'id' => 'tag_input'));?><br/>
-<span id="tag_status" class="quiet">Combine multiple words into single-words.</span>
+<span id="tag_status" class="quiet">Separate with commas. Combine multiple words into single-words.</span>
 <?php } ?>
 <br/>
 <?=$form->end('Edit');?>

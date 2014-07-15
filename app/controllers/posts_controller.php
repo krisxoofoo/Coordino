@@ -185,7 +185,7 @@ class PostsController extends AppController {
 		$this->data['Post']['public_key'] = uniqid();
 
 		if(!empty($this->data['Post']['tags'])) {
-			$this->Post->Behaviors->attach('Tag', array('table_label' => 'tags', 'tags_label' => 'tag', 'separator' => ', '));
+			$this->Post->Behaviors->attach('Tag', array('table_label' => 'tags', 'tags_label' => 'tag', 'separator' => ','));
 		}
 
 
