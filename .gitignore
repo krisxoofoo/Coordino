@@ -7,6 +7,7 @@ app/config/database.php
 .project
 .settings/*
 .idea/*
+*.swp
 
 app/webroot/img/thumbs/*
 app/webroot/img/uploads/*
