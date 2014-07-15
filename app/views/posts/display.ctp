@@ -1,7 +1,8 @@
 <?php
 	foreach($questions as $category => $questionList) {
 ?>
-		<h1><?php echo $category; ?></h1>
+		<div class="list_question_group wrapper">
+		<h2><?php echo $category; ?></h2>
 <?php
 		foreach($questionList as $question) { ?>
 		<div class="list_question wrapper">
@@ -71,6 +72,7 @@
 
 		</div>
 		<?php } ?>
+		</div>
 <?php }
     if((($end_page - $current) > 3) && $current > 3) { ?>
     <span class="left"><a href="/search/type:<?=$type;?>/page:1/search:<?=$search;?>"><u>1</u>&nbsp;</a></span>

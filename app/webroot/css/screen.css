@@ -202,6 +202,9 @@ div.detailed_inputs textarea { width: 450px; font-size: 11px; height: 70px; }
 .question, .answer, .answered { margin-bottom: 10px; padding: 5px; border-bottom: 1px solid #ccc; }
 .answered { background-color: #edf3e1; } 
 .answered .user_info { background-color: #fafff2; }
+.list_question_group {
+	padding: 5px 0px;
+}
 .list_question {
 	border-bottom: 1px dotted #ccc;
 	padding: 5px 0px;
