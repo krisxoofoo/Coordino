@@ -204,7 +204,7 @@
     </div><!-- end questions tab -->
 
     <div class="tabPanel" id="tab-4">
-        <h3>replies given:</h3>
+        <h3>answers given:</h3>
         <?php foreach($recent as $key => $value) : ?>
             <p>
                 <?php if($recent[$key]['History']['type'] == 'answered') : ?>
