@@ -21,7 +21,7 @@ h2 {
 /* -------------------------------------------------------------- 
   Header Elements 
 -------------------------------------------------------------- */
-#header { border-bottom: 1px solid #ddd;}
+#header { border-bottom: 1px solid #ddd; padding-bottom: 5px; }
 #header .top_actions { background-color: #efefef; float: right; display: inline;}
 #header .tabs {}
 #header .tabs li {}

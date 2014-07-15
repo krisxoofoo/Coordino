@@ -40,7 +40,7 @@
 #top_actions .tabs a { padding: 3px 7px;  }
 #top_actions .tabs a:hover { }
 #PostDisplayForm { float: right; margin: 2px 5px 0px 0px; display: inline;}
-#logo { float: left; display: inline; }
+#logo { float: left; display: inline; margin-right: 10px; }
 
 /* Body
 -------------------------------------------------------------- */
