@@ -2,14 +2,14 @@
 	echo $html->css('wmd.css');
 	echo $html->script('wmd/showdown.js');
 	echo $html->script('wmd/wmd.js');
-	
+
 	echo $html->script('jquery/jquery.js');
 	echo $html->script('jquery/jquery.bgiframe.min.js');
 	echo $html->script('jquery/jquery.ajaxQueue.js');
 	echo $html->script('jquery/thickbox-compressed.js');
 	echo $html->script('jquery/jquery.autocomplete.js');
 	echo $html->script('/tags/suggest');
-	
+
 	echo $html->css('thickbox.css');
 	echo $html->css('jquery.autocomplete.css');
 ?>
@@ -18,7 +18,7 @@
   <script>
   $(document).ready(function(){
 	$("#resultsContainer").show("blind");
-	
+
 	$("#tag_input").autocomplete(tags, {
 		minChars: 0,
 		multiple: true,
@@ -35,7 +35,7 @@
 			return row.name;
 		}
 	});
-	
+
 	$("#PostTitle").blur(function(){
 		if($("#PostTitle").val().length >= 10) {
 			$("#title_status").toggle();
@@ -47,14 +47,14 @@
 
 	function getResults()
 	{
-	
+
 		$.get("/mini_search",{query: $("#PostTitle").val(), type: "results"}, function(data){
-		
+
 			$("#resultsContainer").html(data);
 			$("#resultsContainer").show("blind");
 		});
-	}	
-	
+	}
+
 	$("#PostTitle").keyup(function(event){
 		if($("#PostTitle").val().length < 10) {
 			$("#title_status").html('<span class="red"><?php echo __('Titles must be at least 10 characters long.',true) ?></span>');
@@ -62,7 +62,7 @@
 			$("#title_status").html('<?php echo __('What is your question about?',true) ?>');
 		}
 	});
-	
+
   });
   </script>
 <h2><?php echo __('Ask a question',true) ?></h2>
@@ -78,6 +78,9 @@
 <?=$form->text('title', array('class' => 'wmd-panel big_input', 'value' => $session->read('errors.data.Post.title')));?><br/>
 <span id="title_status"class="quiet"><?php echo __('What is your question about?',true) ?></span>
 <div id="resultsContainer"></div>
+
+<?=$form->label(__('Category',true));?><br/>
+<?=$form->select('category', array('' => '-- category --', 'Academic writing' => 'Academic writing', 'Research' => 'Research', 'Scholarly publishing' => 'Scholarly publishing'), array('class' => 'your-mom'));?><br/>
 
 <div id="wmd-button-bar" class="wmd-panel"></div>
 <?=$form->textarea('content', array(
@@ -96,7 +99,7 @@
 <span class="quiet"><?php echo __('Have an account already?',true) ?> <a href="#"><?php echo __('Login before answering!',true) ?></a></span><br/>
 	<?=$form->label(__('Name',true));?><br/>
 	<?=$form->text('User.username', array(
-		'class' => 'big_input medium_input', 
+		'class' => 'big_input medium_input',
 		'value' => $session->read('errors.data.User.username')
 		));
 	?><br/>
@@ -105,7 +108,7 @@
 		'class' => 'big_input medium_input',
 		'value' => $session->read('errors.data.User.email')
 		));
-	?><br/>		
+	?><br/>
 <?php } ?>
 <br/><br/>
 <?=$form->checkbox('Post.notify', array('checked' => true));?>

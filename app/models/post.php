@@ -12,9 +12,14 @@ class Post extends AppModel {
 		'title' => array(
 	        'rule' => array('minLength', '10'),
 	        'message' => 'Titles must be at least 10 characters long.'
-	    )
+	    ),
+		'category' => array(
+					'rule' => array('inList', array('Academic writing', 'Research', 'Scholarly publishing')),
+					'required' => true,
+					'message' => 'Please select a category from the list.',
+		),
 	);
-	
+
 	var $belongsTo = array(
 			'User' => array(
 				'className' => 'User',
@@ -22,7 +27,7 @@ class Post extends AppModel {
 				'fields' => array('User.username', 'User.email', 'User.public_key', 'User.reputation', 'User.image')
 			)
 		);
-		
+
     var $hasMany = array(
         'Answer' => array(
             'className'     => 'Answer',
@@ -35,7 +40,7 @@ class Post extends AppModel {
 	        'foreignKey'    => 'related_id',
 	        'dependent'=> true
 	    )
-    );  
+    );
 	var $hasAndBelongsToMany = array('Tag' =>
 	                            array('className'    => 'Tag',
 	                                  'joinTable'    => 'post_tags',
@@ -123,7 +128,7 @@ class Post extends AppModel {
 				'fields' => array(
 					'Post.title', 'Post.views',
                     'Post.url_title', 'Post.public_key',
-                    'Post.timestamp', 'User.username', 'User.public_key', 
+                    'Post.timestamp', 'User.username', 'User.public_key',
                     'User.image', 'User.reputation'
 					),
 				'limit' => $record . ',' . 15
@@ -147,7 +152,7 @@ class Post extends AppModel {
 				'fields' => array(
 					'Post.title', 'Post.views',
                     'Post.url_title', 'Post.public_key',
-                    'Post.timestamp', 'User.username', 'User.public_key', 
+                    'Post.timestamp', 'User.username', 'User.public_key',
                     'User.image', 'User.reputation'
 					),
 				'limit' => $record . ',' . 15
@@ -341,7 +346,7 @@ class Post extends AppModel {
         $this->Post->recursive = -1;
         $post = $this->find(
             'first', array(
-                'conditions' => array('Post.public_key' => $public_key),                          
+                'conditions' => array('Post.public_key' => $public_key),
                 'fields' => array('Post.url_title', 'Post.related_id', 'Post.public_key')
             )
         );
