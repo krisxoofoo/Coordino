@@ -14,8 +14,7 @@ class Post extends AppModel {
 	        'message' => 'Titles must be at least 10 characters long.'
 	    ),
 		'category' => array(
-					'rule' => array('inList', array('Academic writing', 'Research', 'Scholarly publishing')),
-					'required' => true,
+					'rule' => array('inList', array('', 'Academic writing', 'Research', 'Scholarly publishing')),
 					'message' => 'Please select a category from the list.',
 		),
 	);
