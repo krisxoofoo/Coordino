@@ -1,27 +1,13 @@
 <div>
-		<h3><?php __('Profile Image'); ?></h3>
-		<?=$thumbnail->show(array(
-						        'save_path' => WWW_ROOT . 'img/thumbs',
-						        'display_path' => $this->webroot.  'img/thumbs',
-						        'error_image_path' => $this->webroot. 'img/answerAvatar.png',
-						        'src' => WWW_ROOT .  $user_info['User']['image'],
-						        'w' => 75,
-								'h' => 75,
-								'q' => 100,
-		                        'alt' => $user_info['User']['username'] . 'picture' )
-			);
-		?>
-	<?=$trickyFileInput->draw('picker', array(
-								'form' => array(
-									'id' => 'User' . $user_info['User']['public_key'] . 'ImageChangeForm',
-									'name' => 'User' . $user_info['User']['public_key'] . 'ImageChangeForm',
-									'action' => $this->webroot.'users/' . $user_info['User']['public_key'] . '/upload'),
-								'input' => array(
-									'name' => 'data[Upload][file]',
-									'submitOnChange' => true),
-								'image' => $this->webroot.'img/buttons/choose_image.gif'));
-	?>
-	</div>
+    <h3><?php __('Profile Image'); ?></h3>
+    <?php
+       echo $html->link(
+           '<img src="http://www.gravatar.com/avatar/' . md5(strtolower(trim($user_info['User']['email']))) . '?s=75" width="75" height="75"/>',
+           '/users/'.$user_info['User']['public_key'].'/'.$user_info['User']['username'],
+           array('escape' => false)
+       );
+    ?>
+</div>
 <form action="?" method="post" >
 <div class="detailed_inputs">
 	<div>

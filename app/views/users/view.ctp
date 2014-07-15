@@ -33,27 +33,16 @@
 </script>
 <div id="userAvatar">
     <div id="image">
-        <?php if(empty($user['User']['image'])) { ?>
-            <img src="/img/answerAvatar.png" />
-        <?php }else {
-            echo $thumbnail->show(array(
-                    'save_path' => WWW_ROOT . 'img/thumbs',
-                    'display_path' => $this->webroot.  'img/thumbs',
-                    'error_image_path' => $this->webroot. 'img/answerAvatar.png',
-                    'src' => WWW_ROOT .  $user['User']['image'],
-                    'w' => 130,
-                    'h' => 130,
-                    'q' => 100,
-                    'alt' => $user['User']['username'] . ' picture' )
-            );
-        } ?>
+        <?php
+           echo '<img src="http://www.gravatar.com/avatar/' . md5(strtolower(trim($user['User']['email']))) . '?s=130" width="130" height="130"/>';
+        ?>
     </div>
 </div>
 <div id="userInfo">
     <?php if(!empty($user['User']['info'])) {
         echo $user['User']['info'];
     }else {
-        echo $user['User']['username'] . ' has not added any information about themselves yet!';
+        echo $user['User']['username'] . ' has not added any information yet!';
     } ?>
 </div>
 <div id="tabs" style="margin-top: 0px;">
