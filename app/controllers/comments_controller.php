@@ -21,6 +21,7 @@ class CommentsController extends AppController {
         }
         if(!$this->Setting->repCheck($this->Auth->user('id'), 'rep_comment')
             && $post['Post']['user_id'] !== $this->Auth->user('id')
+            && $redirect['Post']['user_id'] !== $this->Auth->user('id')
         ) {
             $this->Session->setFlash('You need more reputation to do that!', 'error');
             $this->redirect('/questions/' . $redirect['Post']['public_key'] . '/' . $redirect['Post']['url_title']);
