@@ -95,8 +95,7 @@
 			<span style="font-size: 8pt;">&#8226;</span>
 			<h4 style="display: inline;"><?=$question['User']['reputation'];?></h4>
             <?php if (preg_match('/\@researchsquare\.com$/', $question['User']['email'])): ?>
-                <span style="font-size: 8pt;">&#8226;</span>
-                <span style="display: inline; color: #0f6938; font-size: 8pt; font-weight: bold;">RS Verified</font>
+                <div style="color: #0f6938; font-size: 8pt; font-weight: bold; margin: 4px 0;">RS Verified User</div>
             <?php endif; ?>
 					</div> 
 			<span class="quiet">asked <?=$time->timeAgoInWords($question['Post']['timestamp']);?></span>
@@ -215,8 +214,7 @@
 			<span style="font-size: 8pt;">&#8226;</span>
 			<h4 style="display: inline;"><?=$answer['User']['reputation'];?></h4>
             <?php if (preg_match('/\@researchsquare\.com$/', $answer['User']['email'])): ?>
-                <span style="font-size: 8pt;">&#8226;</span>
-                <span style="display: inline; color: #0f6938; font-size: 8pt; font-weight: bold;">RS Verified</font>
+                <div style="color: #0f6938; font-size: 8pt; font-weight: bold; margin: 4px 0;">RS Verified User</div>
             <?php endif; ?>
 					</div> 
 			<span class="quiet">answered <?=$time->timeAgoInWords($answer['Answer']['timestamp']);?></span>
