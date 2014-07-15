@@ -7,7 +7,7 @@
   Global Elements
 -------------------------------------------------------------- */
 a {
-	color: #FF4200;
+	color: #003f5f;
 }
 
 a:hover { 
@@ -58,7 +58,7 @@ a:hover {
   Viewing an Individual Question
 -------------------------------------------------------------- */
 .user_info {
-	background-color: #ffece5;
+	background-color: #eee;
 }
 
 .answered .user_info {
@@ -77,16 +77,12 @@ a:hover {
 .tags {}
 .tag {}
 .tag a {
-	background-color: #FFECE5;
-	border-bottom: 1px solid #fcd6c9;
-	border-right: 1px solid #fcd6c9;
+	background-color: #eee;
+	color: #003f5f;
 	margin-right: 5px;
-	color: #d05024;
 }
 .tag a:hover {
 	text-decoration: none;
+	background-color: #003f5f;
 	color: #fff;
-	background-color: #d05024;
-	border-bottom: 1px solid #FFECE5;
-	border-right: 1px solid #FFECE5;
 }
